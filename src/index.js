@@ -437,37 +437,49 @@ export class Client {
     }
 
     self.mute_local_audio = function(){
-      self.localTracks.forEach(t => {
-        if(t.getType() === 'audio'){
+      if (self.localStream) {
+        self.localStream.getAudioTracks().forEach(t => {
           t.enabled = false;
-        }
-      })
+        })
+      }
     };
 
     self.unmute_local_audio = function(){
-      self.localTracks.forEach(t => {
-        if(t.getType() === 'audio'){
-          t.enabled = true;
-        }
-      })
+      if (self.localStream){
+        self.localStream.getAudioTracks().forEach(t => {
+          t.enabled = false;
+        })
+      }
     };
 
     self.mute_local_video = function(){
-      self.localTracks.forEach(t => {
-        if(t.getType() === 'video'){
+      if (self.localStream){
+        self.localStream.getVideoTracks().forEach(t => {
           t.enabled = false;
-        }
-      })
+        })
+      }
     };
 
     self.unmute_local_video = function(){
-      self.localTracks.forEach(t => {
-        if(t.getType() === 'video'){
+      if (self.localStream){
+        self.localStream.getVideoTracks().forEach(t => {
           t.enabled = true;
-        }
-      })
+        })
+      }
+    };
+
+    self.get_camera_state = function(){
+      if (self.localStream) {
+        let result = false;
+        self.localStream.getVideoTracks().forEach(t => {
+          if (t.enabled) {
+            result = true;
+          }
+        });
+        return result;
+      } else {
+        return false;
+      }
     }
   }
-
-
 }
